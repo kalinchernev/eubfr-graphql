@@ -22,6 +22,7 @@
     "http-aws-es": "6.0.0"
   },
   "devDependencies": {
+    "dotenv": "6.2.0",
     "nodemon": "1.18.10"
   }
 }

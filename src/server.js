@@ -1,4 +1,5 @@
 import "@babel/polyfill";
+require("dotenv").config();
 
 import AWS from "aws-sdk";
 
@@ -12,42 +13,46 @@ import getProjectMapping from "./mappings/project";
 
 const projectMapping = getProjectMapping();
 
-AWS.config.update({ region: "eu-central-1" });
+const {
+  ES_INDEX,
+  ES_TYPE,
+  HOST: host,
+  REGION: region,
+  SECRET_ID
+} = process.env;
+
+AWS.config.update({ region });
 
 (async () => {
-  let accessKeyId = "";
-  let secretAccessKey = "";
-
   const secretsManager = new AWS.SecretsManager();
   const secretsResponse = await secretsManager
-    .getSecretValue({ SecretId: "services/elastic-graphql" })
+    .getSecretValue({ SecretId: SECRET_ID })
     .promise();
 
   const secrets = JSON.parse(secretsResponse.SecretString);
 
-  const { AWS_ACCESS_KEY_ID: id, AWS_SECRET_ACCESS_KEY: key } = secrets;
-
-  accessKeyId = id;
-  secretAccessKey = key;
+  const {
+    AWS_ACCESS_KEY_ID: accessKeyId,
+    AWS_SECRET_ACCESS_KEY: secretAccessKey
+  } = secrets;
 
   const elasticClient = new elasticsearch.Client({
-    host:
-      "https://search-test-public-ip4o6f4o6ziykrbjm4kdpyosfu.eu-central-1.es.amazonaws.com/",
+    host,
+    trace: true,
     connectionClass,
-    awsConfig: new AWS.Config({
-      accessKeyId,
-      secretAccessKey,
-      region: "eu-central-1"
-    }),
     apiVersion: "6.3",
-    trace: true
+    awsConfig: new AWS.Config({
+      region,
+      accessKeyId,
+      secretAccessKey
+    })
   });
 
   const ProjectTC = composeWithElastic({
     apiVersion: "6.3",
     graphqlTypeName: "Project",
-    elasticIndex: "test-projects",
-    elasticType: "project",
+    elasticIndex: ES_INDEX,
+    elasticType: ES_TYPE,
     elasticMapping: projectMapping.mappings.project,
     elasticClient,
     pluralFields: [
@@ -80,7 +85,9 @@ AWS.config.update({ region: "eu-central-1" });
     tracing: true
   });
 
+  // Default port of EB.
+  // @read: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/nodejs-platform-proxy.html
   server.listen({ port: 8081 }).then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`);
+    console.log(`🚀 EUBFR GraphQL Server: ${url}`);
   });
 })();
