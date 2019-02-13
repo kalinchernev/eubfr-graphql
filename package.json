@@ -5,7 +5,7 @@
   "scripts": {
     "develop": "nodemon --exec babel-node src/server.js",
     "build": "babel src --out-dir dist",
-    "serve": "node dist/server.js"
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@babel/cli": "7.2.3",
