@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "@eubfr/compute-ecs-graphql",
+  "version": "0.5.0",
+  "scripts": {
+    "develop": "nodemon --exec babel-node src/server.js",
+    "build": "babel src --out-dir dist",
+    "serve": "node dist/server.js"
+  },
+  "dependencies": {
+    "@babel/cli": "7.2.3",
+    "@babel/core": "7.2.2",
+    "@babel/node": "7.2.2",
+    "@babel/polyfill": "7.2.5",
+    "@babel/preset-env": "7.3.1",
+    "apollo-server": "2.4.0",
+    "aws-sdk": "2.395.0",
+    "elasticsearch": "15.3.1",
+    "graphql": "14.1.1",
+    "graphql-compose": "5.10.1",
+    "graphql-compose-elasticsearch": "2.2.2",
+    "http-aws-es": "6.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.10"
+  }
+}
