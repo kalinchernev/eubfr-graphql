@@ -7,6 +7,12 @@ To be effective with this service, you will need to know the fundamentals of:
 - [Elasticsearch](https://www.elastic.co/guide/index.html)
 - [GraphQL](https://graphql.org/)
 
+## Demo
+
+Here's an example query you can make combining DSL from Elasticsearch and GraphQL:
+
+![Screenshot](./assets/demo.png)
+
 ## Requirements
 
 - Node.js (8.10.x recommended)
@@ -72,4 +78,10 @@ Get information about current settings:
 
 ```
 $ eb printenv
+```
+
+### Deployment
+
+```sh
+$ eb deploy
 ```
