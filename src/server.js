@@ -80,7 +80,7 @@ AWS.config.update({ region: "eu-central-1" });
     tracing: true
   });
 
-  server.listen().then(({ url }) => {
+  server.listen({ port: 8081 }).then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`);
   });
 })();

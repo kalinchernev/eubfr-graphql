@@ -85,7 +85,9 @@ regeneratorRuntime.mark(function _callee() {
             introspection: true,
             tracing: true
           });
-          server.listen().then(function (_ref2) {
+          server.listen({
+            port: 8081
+          }).then(function (_ref2) {
             var url = _ref2.url;
             console.log("\uD83D\uDE80 Server ready at ".concat(url));
           });
